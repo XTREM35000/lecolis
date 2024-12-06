@@ -1,6 +1,7 @@
 import { defineNuxtConfig } from "nuxt/config";
 
 export default defineNuxtConfig({
+  compatibilityDate: "2024-12-06",
   modules: [
     "@nuxt/ui",
     "@nuxtjs/tailwindcss",

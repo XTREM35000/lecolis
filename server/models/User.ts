@@ -1,39 +1,38 @@
-import mongoose from 'mongoose'
-import bcrypt from 'bcryptjs'
+import mongoose, { Document } from "mongoose";
+
+export interface IUser extends Document {
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  _id: string;
+  countryCode: string; // Code du pays (ex. "+225")
+  numberPhone: string; // Numéro de téléphone local (sans code pays)
+  fullPhoneNumber: string; // Numéro complet avec code pays (ex. "+22512345678")
+}
 
 const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  name: {
-    type: String,
-    required: true
-  },
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   role: {
     type: String,
-    enum: ['superadmin', 'admin', 'client', 'guest'],
-    default: 'client'
+    enum: ["superadmin", "admin", "client", "guest"],
+    default: "client",
   },
-  avatar: String,
-  createdAt: {
-    type: Date,
-    default: Date.now
-  }
-})
+  countryCode: { type: String, required: true }, // Champ pour le code pays
+  numberPhone: { type: String, required: true }, // Champ pour le numéro de téléphone
+  fullPhoneNumber: { type: String, required: true, unique: true }, // Champ pour numéro complet
+});
 
-userSchema.pre('save', async function(next) {
-  if (this.isModified('password')) {
-    this.password = await bcrypt.hash(this.password, 10)
+// Middleware Mongoose pour générer `fullPhoneNumber`
+userSchema.pre("save", function (next) {
+  if (this.isModified("countryCode") || this.isModified("numberPhone")) {
+    this.fullPhoneNumber = `${this.countryCode}${this.numberPhone}`;
   }
-  next()
-})
+  next();
+});
 
-export const User = mongoose.model('User', userSchema)
+// export default mongoose.model<IUser>("User", userSchema);
+export const User = mongoose.model<IUser>("User", userSchema);
+export default User;

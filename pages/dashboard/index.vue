@@ -9,7 +9,10 @@
         icon-class="text-blue-600"
       >
         <template #footer>
-          <NuxtLink to="/dashboard/shipments" class="text-blue-600 hover:text-blue-700">
+          <NuxtLink
+            to="/dashboard/shipments"
+            class="text-blue-600 hover:text-blue-700"
+          >
             View all shipments
           </NuxtLink>
         </template>
@@ -35,7 +38,10 @@
         icon-class="text-yellow-600"
       >
         <template #footer>
-          <NuxtLink to="/dashboard/pickups" class="text-blue-600 hover:text-blue-700">
+          <NuxtLink
+            to="/dashboard/pickups"
+            class="text-blue-600 hover:text-blue-700"
+          >
             Schedule pickup
           </NuxtLink>
         </template>
@@ -43,29 +49,28 @@
     </div>
 
     <div class="mt-8">
-      <ShipmentTable
-        :shipments="recentShipments"
-        :loading="loading"
-      />
+      <ShipmentTable :shipments="recentShipments" :loading="loading" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { useShipmentStore } from '@/stores/shipment'
+import { onMounted } from "#build/imports";
+import { useShipmentStore } from "@/stores/shipment";
+import { storeToRefs } from "pinia";
 
-definePageMeta({
-  layout: 'dashboard',
-  middleware: ['auth']
-})
+defineProps({
+  layout: { type: String, default: "dashboard" },
+  middleware: { type: Array, default: () => ["auth"] },
+});
 
-const shipmentStore = useShipmentStore()
-const { stats, loading, recentShipments } = storeToRefs(shipmentStore)
+const shipmentStore = useShipmentStore();
+const { stats, loading, recentShipments } = storeToRefs(shipmentStore);
 
 onMounted(async () => {
   await Promise.all([
     shipmentStore.fetchStats(),
-    shipmentStore.fetchShipments()
-  ])
-})
+    shipmentStore.fetchShipments(),
+  ]);
+});
 </script>

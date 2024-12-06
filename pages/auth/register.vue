@@ -1,65 +1,134 @@
 <template>
-  <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full space-y-8">
-      <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Create your account
-        </h2>
+  <div class="min-h-screen flex items-top justify-center bg-[#F5F7FA] p-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-red-900">Créer un compte</h2>
       </div>
+
       <form class="mt-8 space-y-6" @submit.prevent="handleRegister">
-        <div class="rounded-md shadow-sm space-y-4">
-          <div>
-            <UFormGroup label="Full Name">
-              <UInput
-                v-model="name"
+        <div class="space-y-4">
+          <!-- Nom et Prénom -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Nom</label>
+              <input
+                v-model="form.lastName"
                 type="text"
+                placeholder="Nom"
                 required
-                placeholder="Enter your full name"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
               />
-            </UFormGroup>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Prénom</label
+              >
+              <input
+                v-model="form.firstName"
+                type="text"
+                placeholder="Prénom"
+                required
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+              />
+            </div>
           </div>
+
+          <!-- Email -->
           <div>
-            <UFormGroup label="Email address">
-              <UInput
-                v-model="email"
-                type="email"
-                required
-                placeholder="Enter your email"
-              />
-            </UFormGroup>
+            <label class="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              v-model="form.email"
+              type="email"
+              placeholder="email@gmail.com"
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+            />
           </div>
+
+          <!-- Téléphone -->
           <div>
-            <UFormGroup label="Password">
-              <UInput
-                v-model="password"
-                type="password"
+            <label class="block text-sm font-medium text-gray-700"
+              >Téléphone</label
+            >
+            <div class="flex gap-2">
+              <select
+                v-model="form.countryCode"
+                class="mt-1 block w-24 rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+              >
+                <option value="+225">+225</option>
+                <option value="+33">+33</option>
+                <option value="+1">+1</option>
+              </select>
+              <input
+                ref="phoneInput"
+                v-model="form.phoneNumber"
+                type="tel"
                 required
-                placeholder="Enter your password"
+                placeholder="00 00 00 00 00"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
               />
-            </UFormGroup>
+            </div>
+          </div>
+
+          <!-- Rôle -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Rôle</label>
+            <select
+              v-model="form.role"
+              required
+              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+            >
+              <option disabled value="">Sélectionnez un rôle</option>
+              <option value="superadmin">Super Admin</option>
+              <option value="admin">Admin</option>
+              <option value="user">Utilisateur</option>
+              <option value="client">Client</option>
+              <option value="visitor">Visiteur</option>
+            </select>
+          </div>
+
+          <!-- Mot de passe -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700"
+              >Mot de passe</label
+            >
+            <div class="relative">
+              <input
+                v-model="form.password"
+                placeholder="Mot de passe"
+                :type="showPassword ? 'text' : 'password'"
+                required
+                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+              />
+              <button
+                type="button"
+                @click="showPassword = !showPassword"
+                class="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                {{ showPassword ? "🙈" : "👁️" }}
+              </button>
+            </div>
           </div>
         </div>
 
         <div>
-          <UButton
+          <button
             type="submit"
-            color="blue"
-            block
-            :loading="loading"
+            class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#0070BA] hover:bg-[#003087] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#0070BA]"
           >
-            Create Account
-          </UButton>
+            S'inscrire
+          </button>
         </div>
       </form>
 
       <div class="text-center">
         <p class="text-sm text-gray-600">
-          Already have an account?
+          Déjà inscrit ?
           <NuxtLink
             to="/auth/login"
-            class="font-medium text-blue-600 hover:text-blue-500"
+            class="font-medium text-[#0070BA] hover:text-[#003087]"
           >
-            Sign in here
+            Se connecter
           </NuxtLink>
         </p>
       </div>
@@ -68,31 +137,53 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({
-  middleware: ['auth'],
-  layout: 'auth'
-})
+import { ref, onMounted } from "vue";
+import IMask from "imask";
+import { toast } from "vue3-toastify";
+import { navigateTo } from "nuxt/app";
 
-const name = ref('')
-const email = ref('')
-const password = ref('')
-const loading = ref(false)
-const { register } = useAuth()
-const router = useRouter()
+const form = ref({
+  lastName: "",
+  firstName: "",
+  email: "",
+  countryCode: "+225",
+  phoneNumber: "",
+  password: "",
+  role: "",
+});
+
+const showPassword = ref(false);
+const phoneInput = ref(null);
+
+onMounted(() => {
+  if (phoneInput.value) {
+    IMask(phoneInput.value, {
+      mask: "00 00 00 00 00",
+      lazy: false,
+    });
+  }
+});
+
+const cleanPhoneNumber = (phoneNumber: string) =>
+  phoneNumber.replace(/[\s_]/g, "").slice(0, 10);
 
 const handleRegister = async () => {
-  loading.value = true
   try {
-    const success = await register({
-      name: name.value,
-      email: email.value,
-      password: password.value
-    })
-    if (success) {
-      router.push('/dashboard')
-    }
-  } finally {
-    loading.value = false
+    const cleanedPhoneNumber = cleanPhoneNumber(form.value.phoneNumber);
+    const fullPhoneNumber = `${form.value.countryCode}${cleanedPhoneNumber}`;
+
+    await $fetch("/api/auth/register", {
+      method: "POST",
+      body: { ...form.value, fullPhoneNumber },
+    });
+
+    toast.success("Inscription réussie !");
+    navigateTo("/auth/login");
+  } catch (error) {
+    console.error("Erreur d'inscription:", error);
+    toast.error(
+      (error as any).data?.message || "Erreur lors de l'inscription."
+    );
   }
-}
+};
 </script>
