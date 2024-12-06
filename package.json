@@ -1,0 +1,36 @@
+{
+  "name": "gogo-express",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "generate-env": "node generateEnv.js",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "ngrok": "ngrok http 3000"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^2.14.2",
+    "@nuxtjs/color-mode": "^3.3.2",
+    "@nuxtjs/tailwindcss": "^6.11.4",
+    "@pinia/nuxt": "^0.5.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.2.1",
+    "nuxt": "^3.13.0",
+    "pinia": "^2.1.7",
+    "vue3-toastify": "^0.2.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@nuxtjs/google-fonts": "^3.1.3",
+    "@types/node": "^22.10.1",
+    "ngrok": "^5.0.0-beta.2",
+    "typescript": "^5.4.2"
+  }
+}
