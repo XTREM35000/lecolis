@@ -1,5 +1,6 @@
+<!-- pages\auth\register.vue -->
 <template>
-  <div class="min-h-screen flex items-top justify-center bg-[#F5F7FA] p-8">
+  <div class="min-h-screen flex items-top justify-center bg-[#F5F7FA]">
     <div class="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-lg">
       <div class="text-center">
         <h2 class="text-3xl font-bold text-red-900">Créer un compte</h2>
@@ -8,7 +9,7 @@
       <form class="mt-8 space-y-6" @submit.prevent="handleRegister">
         <div class="space-y-4">
           <!-- Nom et Prénom -->
-          <div class="grid grid-cols-2 gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label class="block text-sm font-medium text-gray-700">Nom</label>
               <input
@@ -16,7 +17,7 @@
                 type="text"
                 placeholder="Nom"
                 required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
               />
             </div>
             <div>
@@ -28,7 +29,7 @@
                 type="text"
                 placeholder="Prénom"
                 required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
               />
             </div>
           </div>
@@ -41,7 +42,7 @@
               type="email"
               placeholder="email@gmail.com"
               required
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+              class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
             />
           </div>
 
@@ -65,48 +66,53 @@
                 type="tel"
                 required
                 placeholder="00 00 00 00 00"
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
               />
             </div>
           </div>
 
-          <!-- Rôle -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700">Rôle</label>
-            <select
-              v-model="form.role"
-              required
-              class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
-            >
-              <option disabled value="">Sélectionnez un rôle</option>
-              <option value="superadmin">Super Admin</option>
-              <option value="admin">Admin</option>
-              <option value="user">Utilisateur</option>
-              <option value="client">Client</option>
-              <option value="visitor">Visiteur</option>
-            </select>
-          </div>
-
-          <!-- Mot de passe -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700"
-              >Mot de passe</label
-            >
-            <div class="relative">
-              <input
-                v-model="form.password"
-                placeholder="Mot de passe"
-                :type="showPassword ? 'text' : 'password'"
-                required
-                class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
-              />
-              <button
-                type="button"
-                @click="showPassword = !showPassword"
-                class="absolute right-3 top-1/2 -translate-y-1/2"
+          <!-- Rôle et Mot de passe -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <!-- Rôle -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Rôle</label
               >
-                {{ showPassword ? "🙈" : "👁️" }}
-              </button>
+              <select
+                v-model="form.role"
+                required
+                class="mt-1 block rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
+              >
+                <option disabled value="">Sélection rôle</option>
+                <option value="superadmin">Super Admin</option>
+                <option value="admin">Admin</option>
+                <option value="user">Utilisateur</option>
+                <option value="client">Client</option>
+                <option value="visitor">Visiteur</option>
+              </select>
+            </div>
+
+            <!-- Mot de passe -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700"
+                >Mot de passe</label
+              >
+              <div class="relative">
+                <input
+                  v-model="form.password"
+                  placeholder="Mot de passe"
+                  :type="showPassword ? 'text' : 'password'"
+                  required
+                  class="mt-1 block w-full sm:w-[90%] rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
+                />
+                <button
+                  type="button"
+                  @click="showPassword = !showPassword"
+                  class="absolute right-6 top-1/2 transform -translate-y-1/2 text-xl"
+                >
+                  {{ showPassword ? "🙈" : "👁️" }}
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -155,11 +161,13 @@ const form = ref({
 const showPassword = ref(false);
 const phoneInput = ref(null);
 
+// Appliquer le masque au champ téléphone lors du montage
 onMounted(() => {
   if (phoneInput.value) {
+    // Appliquer un masque de type téléphone avec des espaces entre les paires de chiffres
     IMask(phoneInput.value, {
-      mask: "00 00 00 00 00",
-      lazy: false,
+      mask: "00 00 00 00 00", // Format spécifique de "00 00 00 00 00"
+      lazy: false, // Le masque s'applique immédiatement
     });
   }
 });

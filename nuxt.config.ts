@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxtjs/google-fonts",
   ],
+  plugins: ["~/plugins/auth-config.ts"],
   ui: {
     global: true,
   },

@@ -1,15 +1,14 @@
 <template>
-  <div
-    class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
-  >
-    <div class="max-w-md w-full space-y-8">
-      <div>
-        <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+  <div class="max-h-screen flex items-center justify-center bg-[#F5F7FA] px-4">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:max-w-md">
+      <div class="text-center mb-4">
+        <h2 class="text-3xl font-extrabold text-red-900">
           Connexion à votre compte
         </h2>
       </div>
-      <form class="mt-8 space-y-6" @submit.prevent="handleLogin">
-        <div class="rounded-md shadow-sm space-y-4">
+
+      <form class="space-y-6" @submit.prevent="handleLogin">
+        <div class="space-y-4">
           <!-- Champ Téléphone -->
           <div>
             <label class="block text-sm font-medium text-gray-700"
@@ -18,7 +17,7 @@
             <div class="flex gap-2">
               <select
                 v-model="countryCode"
-                class="block w-20 rounded-md border border-gray-300 px-2 py-1"
+                class="mt-1 block w-24 rounded-md border border-gray-300 px-3 py-2 focus:border-[#0070BA] focus:ring-[#0070BA]"
               >
                 <option value="+225">+225</option>
                 <option value="+33">+33</option>
@@ -26,13 +25,15 @@
               </select>
               <input
                 v-model="phoneNumber"
+                ref="phoneInput"
                 type="tel"
-                class="block w-full rounded-md border border-gray-300 px-3 py-1"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
                 placeholder="Numéro de téléphone"
                 required
               />
             </div>
           </div>
+
           <!-- Champ Mot de passe -->
           <div>
             <label class="block text-sm font-medium text-gray-700"
@@ -42,20 +43,21 @@
               <input
                 v-model="password"
                 :type="showPassword ? 'text' : 'password'"
-                class="block w-full rounded-md border border-gray-300 px-3 py-1"
+                class="mt-1 block w-full rounded-md border border-gray-300 px-4 py-3 focus:border-[#0070BA] focus:ring-[#0070BA]"
                 placeholder="Mot de passe"
                 required
               />
               <button
                 type="button"
                 @click="togglePasswordVisibility"
-                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500"
+                class="absolute right-3 top-1/2 transform -translate-y-1/2 text-xl"
               >
                 {{ showPassword ? "🙈" : "👁️" }}
               </button>
             </div>
           </div>
         </div>
+
         <!-- Bouton de Connexion -->
         <div>
           <button
@@ -66,6 +68,7 @@
             {{ loading ? "Connexion..." : "Se connecter" }}
           </button>
         </div>
+
         <!-- Message d'erreur -->
         <div v-if="errorMessage" class="text-red-600 text-sm text-center mt-2">
           {{ errorMessage }}
@@ -76,8 +79,9 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useAuthStore } from "~/stores/auth"; // Corrigez l'import si nécessaire
+import { ref, onMounted } from "vue";
+import { useAuthStore } from "@/stores/auth"; // Corrigez l'import si nécessaire
+import IMask from "imask";
 
 // Variables réactives
 const countryCode = ref("+225");
@@ -86,6 +90,7 @@ const password = ref("");
 const showPassword = ref(false);
 const loading = ref(false);
 const errorMessage = ref("");
+const phoneInput = ref(null); // Référence pour l'élément input
 
 // Fonction pour gérer la visibilité du mot de passe
 const togglePasswordVisibility = () => {
@@ -122,4 +127,15 @@ const handleLogin = async () => {
     loading.value = false;
   }
 };
+
+// Appliquer le masque au champ téléphone lors du montage
+onMounted(() => {
+  if (phoneInput.value) {
+    // Appliquer un masque de type téléphone avec des espaces entre les paires de chiffres
+    IMask(phoneInput.value, {
+      mask: "00 00 00 00 00", // Format spécifique de "00 00 00 00 00"
+      lazy: false, // Le masque s'applique immédiatement
+    });
+  }
+});
 </script>

@@ -1,5 +1,3 @@
-<!--components\app\Header.vue  -->
-
 <template>
   <header class="bg-[#0070BA] shadow-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,15 +97,20 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useAuth } from "~/composables/useAuth";
+// import { useAuth } from "~/composables/useAuth";
+import { useAuth } from "@/composables/useAuth"; // Chemin d'importation correct selon votre structure
+
 import { useRoute } from "vue-router";
 
 // Navigation items
 const navigationItems = [
   { name: "Accueil", path: "/" },
   { name: "Services", path: "/services" },
+  // { name: "Services", path: "/services" },
   { name: "Tarifs", path: "/pricing" },
+  // { name: "Tarifs", path: "/pricing" },
   { name: "Contact", path: "/contact" },
+  // { name: "Contact", path: "/contact" },
 ];
 
 const route = useRoute();
@@ -120,16 +123,20 @@ const isMenuOpen = ref(false);
 
 // Functions
 const toggleMenu = () => {
+  console.log("toggleMenu called"); // Log when the button is clicked
   isMenuOpen.value = !isMenuOpen.value;
+  console.log(`isMenuOpen set to: ${isMenuOpen.value}`); // Log the state change of the menu
 };
 
 const closeMenu = () => {
+  console.log("closeMenu called"); // Log when the menu is being closed
   isMenuOpen.value = false;
 };
 
 const isCurrentPath = (path: string) => route.path === path;
 
 const handleLogout = () => {
+  console.log("handleLogout called"); // Log when the logout function is triggered
   logout();
 };
 </script>

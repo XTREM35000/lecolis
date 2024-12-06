@@ -1,14 +1,15 @@
 import jwt from "jsonwebtoken";
+// server\utils\auth.ts
 import { H3Event } from "h3";
 import User from "../models/User";
 
-const config = useRuntimeConfig();
-
 export const generateToken = (userId: string): string => {
+  const config = useRuntimeConfig();
   return jwt.sign({ userId }, config.jwtSecret, { expiresIn: "7d" });
 };
 
 export const verifyToken = async (event: H3Event) => {
+  const config = useRuntimeConfig();
   const token = getHeader(event, "Authorization")?.replace("Bearer ", "");
 
   if (!token) {
